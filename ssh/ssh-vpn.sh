@@ -152,12 +152,7 @@ screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7900 --max-clients 500
 # setting port ssh
 cd
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 500' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 40000' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 51443' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 58080' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 200' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port 22' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
 echo "=== Install Dropbear ==="
@@ -278,6 +273,7 @@ wget -O running "https://raw.githubusercontent.com/adammoi/anjim/main/menu/runni
 wget -O clearcache "https://raw.githubusercontent.com/adammoi/anjim/main/menu/clearcache.sh"
 wget -O m-trgo "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-trgo.sh"
 wget -O m-trojan "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-trojan.sh"
+wget -O clear-log "https://raw.githubusercontent.com/adammoi/anjim/main/menu/clear-log.sh"
 
 # menu ssh ovpn
 wget -O m-sshovpn "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-sshovpn.sh"
@@ -322,6 +318,7 @@ chmod +x running
 chmod +x clearcache
 chmod +x m-trgo
 chmod +x m-trojan
+chmod +x clear-log
 
 chmod +x m-sshovpn
 chmod +x usernew
