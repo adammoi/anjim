@@ -4,7 +4,7 @@ trgo="$(cat ~/log-install.txt | grep -w "Trojan Go" | cut -d: -f2|sed 's/ //g')"
 user=trial`</dev/urandom tr -dc X-Z0-9 | head -c4`
 uuid=$(cat /proc/sys/kernel/random/uuid)
 masaaktif=1
-sed -i '/"'""$uuid""'"$/a\,"'""$user""'"' /etc/trojan-go/config.json
+sed -i '/"'""$uuid""'"$/a\,"akun": "'""$user""'"' /etc/trojan-go/config.json
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
 hariini=`date -d "0 days" +"%Y-%m-%d"`
 echo -e "### $user $exp" >> /etc/trojan-go/akun.conf
