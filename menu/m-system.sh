@@ -35,7 +35,7 @@ echo -e " [\e[36m•6\e[0m] Set Auto Reboot"
 echo -e " [\e[36m•7\e[0m] Restart All Service"
 echo -e " [\e[36m•8\e[0m] Change Banner"
 echo -e " [\e[36m•9\e[0m] Cek Bandwith"
-echo -e " [\e[36m•10\e[0m] Clear Log"
+echo -e " [\e[36m•10\e[0m] Clear Cache"
 echo -e ""
 echo -e " [\e[31m•0\e[0m] \e[31mBACK TO MENU\033[0m"
 echo -e   ""
@@ -55,7 +55,7 @@ case $opt in
 7) clear ; restart ; exit ;;
 8) clear ; nano /etc/issue.net ; exit ;; #ssh-vpn banner.conf
 9) clear ; bw ; exit ;;
-10) clear ; clear-log ; exit ;;
+10) clear ; clearcache ; exit ;;
 0) clear ; menu ; exit ;;
 x) exit ;;
 *) echo -e "" ; echo "Koen Salah Pencet Cok" ; sleep 1 ; m-system ;;
