@@ -63,3 +63,7 @@ echo "------------------------------------";
 echo "Script Mod By ADAM SIJA"
 rm -rf /tmp/other.txt
 
+echo ""
+read -n 1 -s -r -p "Press any key to back on menu"
+
+m-trgo
