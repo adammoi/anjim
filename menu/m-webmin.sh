@@ -129,7 +129,7 @@ elif [[ "$num" = "x" ]]; then
 exit
 else
 clear
-echo " You Entered The Wrong Number"
-sleep 2
+echo "Koen Salah Pencet Cok"
+sleep 1
 m-webmin
 fi
