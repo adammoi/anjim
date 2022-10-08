@@ -46,5 +46,5 @@ case $opt in
 5) clear ; cektrgo ;;
 0) clear ; menu ;;
 x) exit ;;
-*) echo "Boh salah tekan, Sayang kedak Babi" ; sleep 1 ; m-trojan ;;
+*) echo "Koen Salah Pencet Cok" ; sleep 1 ; m-trojan ;;
 esac
