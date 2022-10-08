@@ -46,7 +46,6 @@ echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━�
 echo -e ""
 read -p " Select menu : " Restart
 echo -e ""
-sleep 1
 clear
 case $Restart in
                 1)
@@ -66,23 +65,23 @@ case $Restart in
                 /etc/init.d/nginx restart
                 /etc/init.d/squid restart
                 echo -e "[ \033[32mok\033[0m ] Restarting xray Service (via systemctl) "
-                sleep 0.5
+                
                 systemctl restart xray
                 systemctl restart xray.service
                 echo -e "[ \033[32mok\033[0m ] Restarting badvpn Service (via systemctl) "
-                sleep 0.5
+                
                 screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 --max-clients 500
-                sleep 0.5
+                
                 echo -e "[ \033[32mok\033[0m ] Restarting websocket Service (via systemctl) "
-                sleep 0.5
+                
                 systemctl restart sshws.service
                 systemctl restart ws-dropbear.service
                 systemctl restart ws-stunnel.service
-                sleep 0.5
+                
                 echo -e "[ \033[32mok\033[0m ] Restarting Trojan Go Service (via systemctl) "
-                sleep 0.5
+                
                 systemctl restart trojan-go.service 
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] ALL Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -99,7 +98,7 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 /etc/init.d/ssh restart
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] SSH Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -116,7 +115,7 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 /etc/init.d/dropbear restart
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Dropbear Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -133,7 +132,7 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 /etc/init.d/stunnel4 restart
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Stunnel4 Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -150,7 +149,7 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 /etc/init.d/openvpn restart
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Openvpn Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -167,7 +166,7 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 /etc/init.d/squid restart
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Squid Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -184,7 +183,7 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 /etc/init.d/nginx restart
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Nginx Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -202,7 +201,7 @@ case $Restart in
                 sleep 1
                 echo -e "[ \033[32mok\033[0m ] Restarting badvpn Service (via systemctl) "
                 screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 --max-clients 500
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Badvpn Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -221,7 +220,7 @@ case $Restart in
                 echo -e "[ \033[32mok\033[0m ] Restarting xray Service (via systemctl) "
                 systemctl restart xray
                 systemctl restart xray.service
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] XRAY Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -238,11 +237,11 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 echo -e "[ \033[32mok\033[0m ] Restarting websocket Service (via systemctl) "
-                sleep 0.5
+                
                 systemctl restart sshws.service
                 systemctl restart ws-dropbear.service
                 systemctl restart ws-stunnel.service
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] WEBSOCKET Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -259,9 +258,9 @@ case $Restart in
                 echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
                 sleep 1
                 echo -e "[ \033[32mok\033[0m ] Restarting Trojan Go Service (via systemctl) "
-                sleep 0.5
+                
                 systemctl restart trojan-go.service
-                sleep 0.5
+                
                 echo -e "[ \033[32mInfo\033[0m ] Trojan Go Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -277,5 +276,5 @@ case $Restart in
                 clear
                 exit
                 ;;
-                *) echo -e "" ; echo "Boh salah tekan, Sayang kedak Babi" ; sleep 1 ; restart ;;               
+                *) echo -e "" ; echo "Koen Salah Pencet Cok" ; sleep 1 ; restart ;;               
         esac
