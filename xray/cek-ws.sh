@@ -32,7 +32,7 @@ echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━�
 
 for akun in "${data[@]}"
 do
-if [[ -z "$email" ]]; then
+if [[ -z "$akun" ]]; then
 akun="tidakada"
 fi
 
@@ -41,7 +41,7 @@ data2=( `netstat -anp | grep ESTABLISHED | grep tcp6 | grep xray | awk '{print $
 for ip in "${data2[@]}"
 do
 
-jum=$(cat /var/log/xray/access.log | grep -w $email | awk '{print $3}' | cut -d: -f1 | grep -w $ip | sort | uniq)
+jum=$(cat /var/log/xray/access.log | grep -w $akun | awk '{print $3}' | cut -d: -f1 | grep -w $ip | sort | uniq)
 if [[ "$jum" = "$ip" ]]; then
 echo "$jum" >> /tmp/ipvmess.txt
 else
@@ -56,7 +56,7 @@ if [[ -z "$jum" ]]; then
 echo > /dev/null
 else
 jum2=$(cat /tmp/ipvmess.txt | nl)
-echo "user : $email";
+echo "user : $akun";
 echo "$jum2";
 echo "----------------------------------------"
 fi
