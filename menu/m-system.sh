@@ -58,5 +58,5 @@ case $opt in
 10) clear ; clear-log ; exit ;;
 0) clear ; menu ; exit ;;
 x) exit ;;
-*) echo -e "" ; echo "Anda salah tekan" ; sleep 1 ; m-system ;;
+*) echo -e "" ; echo "Koen Salah Pencet Cok" ; sleep 1 ; m-system ;;
 esac
