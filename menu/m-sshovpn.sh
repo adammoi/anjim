@@ -265,7 +265,7 @@ if  [  -f  " /etc/systemd/system/sshws.service "  ] ;  then
 clear 
 else 
 wget -q -O /usr/bin/proxy3.js  " https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/proxy3.js " 
-cat  << EOF  > /etc/systemd/system/sshws.service 
+cat  <<-EOF> /etc/systemd/system/sshws.service 
 [Unit] 
 Description=WSenabler 
 Documentation=https://github.com/adammoi 
