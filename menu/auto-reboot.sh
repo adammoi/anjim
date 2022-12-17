@@ -97,7 +97,7 @@ echo -e "│                  • ADAM SIJA •                  │"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo ""
 read -n 1 -s -r -p "  Press any key to back on menu"
-autoboot  
+auto-reboot  
 }
 clear
 echo -e "┌─────────────────────────────────────────────────┐"
