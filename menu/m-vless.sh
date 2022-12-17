@@ -5,38 +5,37 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 function  cekvless(){ 
 clear 
 echo -n > /tmp/other.txt 
-data=(  ` cat /etc/xray/config.json  |  grep  ' #& '  |  cut -d  '  '  -f 2  |  sort  |  uniq ` ) ; 
+data=(`cat /etc/xray/config.json | grep '#& ' | cut -d ' ' -f 2 | sort | uniq`) ; 
 echo -e "┌─────────────────────────────────────────────────┐" 
 echo -e "│              • VLESS USER ONLINE •              │"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo -e "┌─────────────────────────────────────────────────┐" 
 
-for  akun  in  " ${data[@]} " 
-do 
-if  [[  -z  " $akun "  ]] ;  then 
-account = " none " 
-fi 
-
+for akun in "${data[@]}" 
+do
+if [[ -z "$akun" ]] ; then 
+account="none"
+fi
 echo -n > /tmp/ipvless.txt 
-data2=(  ` cat /var/log/xray/access.log  |  tail -n 500  |  cut -d  "  "  -f 3  |  sed  ' s/tcp://g '  |  cut -d  " : "  -f 1  |  sort  |  uniq ` ) ; 
-for  ip  in  " ${data2[@]} " 
-do 
+data2=(`cat /var/log/xray/access.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq`) ; 
+for ip in "${data2[@]}" 
+do
 
-jum= $( cat /var/log/xray/access.log  |  grep -w  " $akun "  |  tail -n 500  |  cut -d  "  "  -f 3  |  sed  ' s/tcp://g '  |  cut -d  " : "  -f 1  |  grep -w  " $ip "  |  sort  |  uniq ) 
-if  [[  " $jum "  =  " $ip "  ]] ;  then 
-echo  " $jum "  >>  /tmp/ipvless.txt 
-else 
-echo  " $ip "  >>  /tmp/other.txt 
-fi 
-jum2= $( cat /tmp/ipvless.txt ) 
-sed -i  " / $jum2 /d "  /tmp/other.txt  >  /dev/null  2>&1 
+jum=$(cat /var/log/xray/access.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort | uniq) 
+if [[ "$jum" = "$ip" ]] ; then 
+echo "$jum" >> /tmp/ipvless.txt 
+else
+echo "$ip" >> /tmp/other.txt 
+fi
+jum2=$(cat /tmp/ipvless.txt ) 
+sed -i "/$jum2/d" /tmp/other.txt > /dev/null  2>&1 
 done 
 
-day= $( cat /tmp/ipvless.txt ) 
-if  [[  -z  " $jum "  ]] ;  then 
-echo  >  /dev/null 
+day=$(cat /tmp/ipvless.txt ) 
+if [[ -z "$jum" ]] ;  then 
+echo > /dev/null 
 else 
-jum2= $( cat /tmp/ipvless.txt  |  nl ) 
+jum2=$(cat /tmp/ipvless.txt | nl ) 
 echo -e "│     user :  $akun                               |" ; 
 echo -e "│     $jum2                                       |" ; 
 fi 
@@ -172,16 +171,16 @@ fi
 } 
 
 function  addvless(){ 
-domain= $( cat /etc/xray/domain ) 
+domain=$(cat /etc/xray/domain) 
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • CREATE VLESS USER •              │"
 echo -e "└─────────────────────────────────────────────────┘"
 echo -e "┌─────────────────────────────────────────────────┐"
-tls= " $( cat  ~ /log-install.txt  |  grep -w  " Vless TLS "  |  cut -d: -f2 | sed  ' s/ //g ' ) " 
-none= " $( cat  ~ /log-install.txt  |  grep -w  " Vless None TLS "  |  cut -d: -f2 | sed  ' s/ //g ' ) " 
-until  [[  $user  =~  ^[a-zA-Z0-9_]+$  &&  ${CLIENT_EXISTS}  ==  ' 0 '  ]] ;  do 
-		read  -rp  "   Input Username :  "  -e user 
-        if  [  -z  $user  ] ;  then 
+tls="$(cat ~/log-install.txt | grep -w "Vless TLS" | cut -d: -f2 | sed ' s/ //g ')"
+none="$(cat ~/log-install.txt | grep -w "Vless None TLS" | cut -d: -f2 | sed ' s/ //g ')"
+until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${user_EXISTS} == '0' ]] ; do 
+read  -rp  "    Input Username :  "  -e user 
+if  [  -z  $user  ] ;  then 
 echo -e "│        [Error] Username cannot be empty         |"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo -e "┌────────────────────── BY ───────────────────────┐"
@@ -189,11 +188,10 @@ echo -e "│                  • ADAM SIJA •                  │"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo ""
 read -n 1 -s -r -p "   Press any key to back on menu"
-menu 
+m-vless
 fi 
-		CLIENT_EXISTS= $( grep -w  $user  /etc/xray/config.json  |  wc -l ) 
-
-if  [[  ${CLIENT_EXISTS}  ==  ' 1 '  ]] ;  then 
+user_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l ) 
+if [[ ${user_EXISTS} == '1' ]] ; then 
 clear
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • CREATE VLESS USER •              │"
@@ -206,20 +204,21 @@ echo -e "│                  • ADAM SIJA •                  │"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo  " " 
 read  -n 1 -s -r -p  "    Press any key to back on menu " 
-menu 
+m-vless
 fi 
 done 
 
-uuid= $( cat /proc/sys/kernel/random/uuid ) 
-read  -p  "   Expired (days):  "  masaaktif 
-exp= ` date -d  " $masaaktif  days "  + " %Y-%m-%d " ` 
-sed -i  ' /#vless$/a\#&  ' " $user  $exp " ' \ 
-},{"id": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
-sed -i  ' /#vlessgrpc$/a\#&  ' " $user  $exp " ' \ 
-},{"id": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
-vlesslink1= " vless:// ${uuid} @ ${domain} : $tls ?path=/vlessws&security=tls&encryption=none&type=ws# ${user} " 
-vlesslink2= " vless:// ${uuid} @ ${domain} : $none ?path=/vlessws&encryption=none&type=ws# ${user} " 
-vlesslink3= " vless:// ${uuid} @ ${domain} : $tls ?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=bug.com# ${user} " 
+uuid=$(cat /proc/sys/kernel/random/uuid)
+read -p "   Expired (days): " masaaktif
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vless$/a\#& '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vlessgrpc$/a\#& '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+vlesslink1="vless://${uuid}@${domain}:$tls?path=/vlessws&security=tls&encryption=none&type=ws#${user}" 
+vlesslink2="vless://${uuid}@${domain}:$none?path=/vlessws&encryption=none&type=ws#${user}" 
+vlesslink3="vless://${uuid}@${domain}:$tls?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=bug.com#${user}" 
 systemctl restart xray 
 clear 
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
@@ -232,11 +231,11 @@ echo -e "  Domain        :  ${domain} " | tee -a /etc/log-create-user.log
 echo -e "  port TLS      :  $tls " | tee -a /etc/log-create-user.log 
 echo -e "  port none TLS :  $none " | tee -a /etc/log-create-user.log 
 echo -e "  id            :  ${uuid} " | tee -a /etc/log-create-user.log
-echo -e "  Encryption    : none " | tee -a /etc/log-create-user.log 
-echo -e "  Network       : ws " | tee -a /etc/log-create-user.log 
-echo -e "  Path          : /vless " | tee -a /etc/log-create-user.log 
-echo -e "  Path WSS      : wss://bug.com/vless " | tee -a /etc/log-create-user.log 
-echo -e "  Path          : vless-grpc " | tee -a /etc/log-create-user.log 
+echo -e "  Encryption    :  none " | tee -a /etc/log-create-user.log 
+echo -e "  Network       :  ws " | tee -a /etc/log-create-user.log 
+echo -e "  Path          :  /vless " | tee -a /etc/log-create-user.log 
+echo -e "  Path WSS      :  wss://bug.com/vless " | tee -a /etc/log-create-user.log 
+echo -e "  Path          :  vless-grpc " | tee -a /etc/log-create-user.log 
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log 
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "  Link TLS : " | tee -a /etc/log-create-user.log
@@ -259,20 +258,20 @@ domain=$(cat /etc/xray/domain)
 tls="$(cat ~/log-install.txt | grep -w "Vless TLS" | cut -d: -f2|sed 's/ //g')"
 none="$(cat ~/log-install.txt | grep -w "Vless None TLS" | cut -d: -f2|sed 's/ //g')"
 user=trial`</dev/urandom tr -dc X-Z0-9 | head -c4`
-uuid=$(cat /proc/sys/kernel/random/uuid)
 masaaktif=1
-exp= ` date -d  " $masaaktif  days "  + " %Y-%m-%d " ` 
-sed -i  ' /#vless$/a\#&  ' " $user  $exp " ' \ 
-},{"id": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
-sed -i  ' /#vlessgrpc$/a\#&  ' " $user  $exp " ' \ 
-},{"id": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
-vlesslink1= " vless:// ${uuid} @ ${domain} : $tls ?path=/vlessws&security=tls&encryption=none&type=ws# ${user} " 
-vlesslink2= " vless:// ${uuid} @ ${domain} : $none ?path=/vlessws&encryption=none&type=ws# ${user} " 
-vlesslink3= " vless:// ${uuid} @ ${domain} : $tls ?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=bug.com# ${user} " 
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vless$/a\#& '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#vlessgrpc$/a\#& '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+vlesslink1="vless://${uuid}@${domain}:$tls?path=/vlessws&security=tls&encryption=none&type=ws#${user}" 
+vlesslink2="vless://${uuid}@${domain}:$none?path=/vlessws&encryption=none&type=ws#${user}" 
+vlesslink3="vless://${uuid}@${domain}:$tls?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=bug.com#${user}" 
 systemctl restart xray 
 clear 
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
-echo -e "│              • CREATE TRIAL VLESS •             │" | tee -a /etc/log-create-user.log
+echo -e "│              • CREATE VLESS USER •              │" | tee -a /etc/log-create-user.log
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "  Remarks       :  ${user} " | tee -a /etc/log-create-user.log
@@ -281,11 +280,11 @@ echo -e "  Domain        :  ${domain} " | tee -a /etc/log-create-user.log
 echo -e "  port TLS      :  $tls " | tee -a /etc/log-create-user.log 
 echo -e "  port none TLS :  $none " | tee -a /etc/log-create-user.log 
 echo -e "  id            :  ${uuid} " | tee -a /etc/log-create-user.log
-echo -e "  Encryption    : none " | tee -a /etc/log-create-user.log 
-echo -e "  Network       : ws " | tee -a /etc/log-create-user.log 
-echo -e "  Path          : /vless " | tee -a /etc/log-create-user.log 
-echo -e "  Path WSS      : wss://bug.com/vless " | tee -a /etc/log-create-user.log 
-echo -e "  Path          : vless-grpc " | tee -a /etc/log-create-user.log 
+echo -e "  Encryption    :  none " | tee -a /etc/log-create-user.log 
+echo -e "  Network       :  ws " | tee -a /etc/log-create-user.log 
+echo -e "  Path          :  /vless " | tee -a /etc/log-create-user.log 
+echo -e "  Path WSS      :  wss://bug.com/vless " | tee -a /etc/log-create-user.log 
+echo -e "  Path          :  vless-grpc " | tee -a /etc/log-create-user.log 
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log 
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "  Link TLS : " | tee -a /etc/log-create-user.log
