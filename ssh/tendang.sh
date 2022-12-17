@@ -1,7 +1,5 @@
 #!/bin/bash
 # Script Mod by ADAM SIJA
-#!/bin/bash
-clear
 MAX=1
 if [ -e "/var/log/auth.log" ]; then
         OS=1;

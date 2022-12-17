@@ -1,27 +1,4 @@
 #!/bin/bash
-MYIP=$(wget -qO- ipinfo.io/ip);
-echo "Checking VPS"
-CEKEXPIRED () {
-    today=$(date -d +1day +%Y-%m-%d)
-    Exp1=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $3}')
-    if [[ $today < $Exp1 ]]; then
-    echo -e "\e[32mSTATUS SCRIPT AKTIF...\e[0m"
-    else
-    echo -e "\e[31mSCRIPT ANDA EXPIRED!\e[0m";
-    
-    exit 0
-fi
-}
-IZIN=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | awk '{print $4}' | grep $MYIP)
-if [ $MYIP = $IZIN ]; then
-echo -e "\e[32mPermission Accepted...\e[0m"
-CEKEXPIRED
-else
-echo -e "\e[31mPermission Denied!\e[0m";
-
-exit 0
-fi
-clear 
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "\E[0;100;33m        • DOMAIN MENU •            \E[0m"
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -42,5 +19,5 @@ case $opt in
 2) clear ; certv2ray ;;
 0) clear ; menu ;;
 x) exit ;;
-*) echo "Koen Salah Pencet Cok" ; sleep 1 ; m-domain ;;
+*) echo "Koen Salah Pencet Cok" ; m-domain ;;
 esac

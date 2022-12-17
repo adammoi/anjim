@@ -1,27 +1,4 @@
 #!/bin/bash
-MYIP=$(wget -qO- ipinfo.io/ip);
-echo "Checking VPS"
-CEKEXPIRED () {
-    today=$(date -d +1day +%Y-%m-%d)
-    Exp1=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $3}')
-    if [[ $today < $Exp1 ]]; then
-    echo -e "\e[32mSTATUS SCRIPT AKTIF...\e[0m"
-    else
-    echo -e "\e[31mSCRIPT ANDA EXPIRED!\e[0m";
-    exit 0
-fi
-}
-IZIN=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | awk '{print $4}' | grep $MYIP)
-if [ $MYIP = $IZIN ]; then
-echo -e "\e[32mPermission Accepted...\e[0m"
-CEKEXPIRED
-else
-echo -e "\e[31mPermission Denied!\e[0m";
-
-exit 0
-fi
-clear
-clear 
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "\E[0;100;33m         • RESTART MENU •          \E[0m"
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -36,7 +13,6 @@ echo -e " [\e[36m•7\e[0m] Restart Nginx"
 echo -e " [\e[36m•8\e[0m] Restart Badvpn"
 echo -e " [\e[36m•9\e[0m] Restart XRAY"
 echo -e " [\e[36m10\e[0m] Restart WEBSOCKET"
-echo -e " [\e[36m11\e[0m] Restart Trojan Go"
 echo -e ""
 echo -e " [\e[31m•0\e[0m] \e[31mBACK TO MENU\033[0m"
 echo -e   ""
@@ -77,11 +53,7 @@ case $Restart in
                 systemctl restart sshws.service
                 systemctl restart ws-dropbear.service
                 systemctl restart ws-stunnel.service
-                
-                echo -e "[ \033[32mok\033[0m ] Restarting Trojan Go Service (via systemctl) "
-                
-                systemctl restart trojan-go.service 
-                
+
                 echo -e "[ \033[32mInfo\033[0m ] ALL Service Restarted"
                 echo ""
                 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -248,26 +220,7 @@ case $Restart in
                 echo ""
                 read -n 1 -s -r -p "Press any key to back on system menu"
                 restart
-                ;;
-                11)
-                clear
-                echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-                echo -e "\E[0;100;33m         • RESTART MENU •          \E[0m"
-                echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-                echo -e ""
-                echo -e "[ \033[32mInfo\033[0m ] Restart Begin"
-                sleep 1
-                echo -e "[ \033[32mok\033[0m ] Restarting Trojan Go Service (via systemctl) "
-                
-                systemctl restart trojan-go.service
-                
-                echo -e "[ \033[32mInfo\033[0m ] Trojan Go Service Restarted"
-                echo ""
-                echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-                echo ""
-                read -n 1 -s -r -p "Press any key to back on system menu"
-                restart
-                ;;                                                                         
+                ;;                                                                      
                 0)
                 menu
                 exit

@@ -1,17 +1,18 @@
 #!/bin/bash
-data=(`find /var/log/ -name *.log`);
+
+data=(`find /var/log/ -name '*.log'`);
 for log in "${data[@]}"
 do
 echo "$log clear"
 echo > $log
 done
-data=(`find /var/log/ -name *.err`);
+data=(`find /var/log/ -name '*.err'`);
 for log in "${data[@]}"
 do
 echo "$log clear"
 echo > $log
 done
-data=(`find /var/log/ -name mail.*`);
+data=(`find /var/log/ -name 'mail.*'`);
 for log in "${data[@]}"
 do
 echo "$log clear"
@@ -21,4 +22,6 @@ echo > /var/log/syslog
 echo > /var/log/btmp
 echo > /var/log/messages
 echo > /var/log/debug
-echo -e "Mod by SL"
+
+bcc=`date`
+echo "Successfully clean log at $bcc"

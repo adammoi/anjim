@@ -1,46 +1,4 @@
 #!/bin/bash
-MYIP=$(curl -sS ipv4.icanhazip.com)
-echo "Checking VPS"
-#########################
-IZIN=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | awk '{print $4}' | grep $MYIP)
-if [ $MYIP = $IZIN ]; then
-echo -e "\e[32mPermission Accepted...\e[0m"
-else
-echo -e "\e[31mPermission Denied!\e[0m";
-exit 0
-fi
-#EXPIRED
-expired=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $3}')
-echo $expired > /root/expired.txt
-today=$(date -d +1day +%Y-%m-%d)
-while read expired
-do
-	exp=$(echo $expired | curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $3}')
-	if [[ $exp < $today ]]; then
-		Exp2="\033[1;31mExpired\033[0m"
-        else
-        Exp2=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $3}')
-	fi
-done < /root/expired.txt
-rm /root/expired.txt
-Name=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $2}')
-# Color Validation
-DF='\e[39m'
-Bold='\e[1m'
-Blink='\e[5m'
-yell='\e[33m'
-red='\e[31m'
-green='\e[32m'
-blue='\e[34m'
-PURPLE='\e[35m'
-cyan='\e[36m'
-Lred='\e[91m'
-Lgreen='\e[92m'
-Lyellow='\e[93m'
-NC='\e[0m'
-GREEN='\033[0;32m'
-ORANGE='\033[0;33m'
-LIGHT='\033[0;37m'
 # VPS Information
 #Domain
 domain=$(cat /etc/xray/domain)
@@ -66,40 +24,40 @@ DATE=$(date +%m/%d/%Y)
 IPVPS=$(curl -s ipinfo.io/ip )
 tram=$( free -m | awk 'NR==2 {print $2}' )
 clear 
-echo -e "\e[33m                                                            \e[0m"
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "                                                            "
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "		   	Bug ? Rebuild lagilah..."
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e " █████╗ ██████╗  █████╗ ███╗   ███╗    ███████╗██╗     ██╗ █████╗" 
 echo -e "██╔══██╗██╔══██╗██╔══██╗████╗ ████║    ██╔════╝██║     ██║██╔══██╗"
 echo -e "███████║██║  ██║███████║██╔████╔██║    ███████╗██║     ██║███████║"
 echo -e "██╔══██║██║  ██║██╔══██║██║╚██╔╝██║    ╚════██║██║██   ██║██╔══██║"
 echo -e "██║  ██║██████╔╝██║  ██║██║ ╚═╝ ██║    ███████║██║╚█████╔╝██║  ██║"
 echo -e "╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝    ╚══════╝╚═╝ ╚════╝ ╚═╝  ╚═╝"
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "                                                                                         "
-echo -e "\e[33m Operating System     \e[0m:  "`hostnamectl | grep "Operating System" | cut -d ' ' -f5-`	
-echo -e "\e[33m Total Amount Of RAM  \e[0m:  $tram MB"
-echo -e "\e[33m System Uptime        \e[0m:  $uptime "
-echo -e "\e[33m Isp Name             \e[0m:  $ISP"
-echo -e "\e[33m City                 \e[0m:  $CITY"
-echo -e "\e[33m Domain               \e[0m:  $domain"	
-echo -e "\e[33m Ip Vps               \e[0m:  $IPVPS"
-echo -e "\e[33m Date	             \e[0m:  $DATE"
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " Operating System     :  "`hostnamectl | grep "Operating System" | cut -d ' ' -f5-`	
+echo -e " Total Amount Of RAM  :  $tram MB"
+echo -e " System Uptime        :  $uptime "
+echo -e " Isp Name             :  $ISP"
+echo -e " City                 :  $CITY"
+echo -e " Domain               :  $domain"	
+echo -e " Ip Vps               :  $IPVPS"
+echo -e " Date	               :  $DATE"
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "                 • SCRIPT MENU •                 "
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " [\e[36m•1\e[0m] SSH & OpenVPN Menu  [\e[36m•5\e[0m] SYSTEM Menu"
-echo -e " [\e[36m•2\e[0m] Vmess Menu          [\e[36m•6\e[0m] Status Service"
-echo -e " [\e[36m•3\e[0m] Vless Menu          [\e[36m•7\e[0m] Clear Log"
-echo -e " [\e[36m•4\e[0m] Trojan Go Menu      [\e[36m•8\e[0m] Trojan GFW Menu"                  
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo -e " [•1] SSH & OpenVPN Menu  [•5] SYSTEM Menu"
+echo -e " [•2] Vmess Menu          [•6] Status Service"
+echo -e " [•3] Vless Menu          [•7] Clear Log"
+echo -e " [•4] Trojan Menu	       [•8] Speedtest"                  
 echo -e   ""
 echo -e   " Press x or [ Ctrl+C ] • To-Exit-Script"
 echo -e   ""
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e " \e[33mClient Name    \E[0m: $Name"
-echo -e " \e[33mScript Expired \E[0m: $Exp2"
-echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo -e " Client Name    : ADAM SIJA"
+echo -e " Script Expired : SAKLAWASE"
+echo -e " ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e   ""
 read -p " Select menu :  "  opt
 echo -e   ""
@@ -107,10 +65,10 @@ case $opt in
 1) clear ; m-sshovpn ;;
 2) clear ; m-vmess ;;
 3) clear ; m-vless ;;
-4) clear ; m-trgo ;;
+4) clear ; m-trojan ;;
 5) clear ; m-system ;;
 6) clear ; running ;;
 7) clear ; clear-log ;;
-8) clear ; m-trojan ;;
+8) clear ; speedtest ;;
 x) exit ;;
 esac

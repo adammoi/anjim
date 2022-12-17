@@ -9,6 +9,7 @@ MYIP2="s/xxxxxxxxx/$MYIP/g";
 NET=$(ip -o $ANU -4 route show to default | awk '{print $5}');
 source /etc/os-release
 ver=$VERSION_ID
+domain=$(cat /root/domain)
 
 #detail nama perusahaan
 country=ID
@@ -20,7 +21,7 @@ commonname=none
 email=adamspx17@gmail.com
 
 # simple password minimal
-curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/ssh/password | openssl aes-256-cbc -d -a -pass pass:scvps07gg -pbkdf2 > /etc/pam.d/common-password
+curl -sS https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/password | openssl aes-256-cbc -d -a -pass pass:scvps07gg -pbkdf2 > /etc/pam.d/common-password
 chmod +x /etc/pam.d/common-password
 
 # go to root
@@ -95,15 +96,15 @@ install_ssl(){
             if [ "$isDebian" != "" ];then
                     apt-get install -y nginx certbot
                     apt install -y nginx certbot
-                    sleep 3s
+                    sleep 2s
             else
                     apt-get install -y nginx certbot
                     apt install -y nginx certbot
-                    sleep 3s
+                    sleep 2s
             fi
     else
         yum install -y nginx certbot
-        sleep 3s
+        sleep 2s
     fi
 
     systemctl stop nginx.service
@@ -112,14 +113,14 @@ install_ssl(){
             isDebian=`cat /etc/issue|grep Debian`
             if [ "$isDebian" != "" ];then
                     echo "A" | certbot certonly --renew-by-default --register-unsafely-without-email --standalone -d $domain
-                    sleep 3s
+                    sleep 2s
             else
                     echo "A" | certbot certonly --renew-by-default --register-unsafely-without-email --standalone -d $domain
-                    sleep 3s
+                    sleep 2s
             fi
     else
         echo "Y" | certbot certonly --renew-by-default --register-unsafely-without-email --standalone -d $domain
-        sleep 3s
+        sleep 2s
     fi
 }
 
@@ -128,13 +129,13 @@ apt -y install nginx
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/nginx.conf"
+wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/nginx.conf"
 mkdir -p /home/vps/public_html
 /etc/init.d/nginx restart
 
 # install badvpn
 cd
-wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/newudpgw"
+wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/newudpgw"
 chmod +x /usr/bin/badvpn-udpgw
 sed -i '$ i\screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 --max-clients 500' /etc/rc.local
 sed -i '$ i\screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 --max-clients 500' /etc/rc.local
@@ -238,13 +239,13 @@ echo 'Please send in your comments and/or suggestions to zaf@vsnl.com'
 # banner /etc/issue.net
 sleep 1
 echo -e "[ ${green}INFO$NC ] Settings banner"
-wget -q -O /etc/issue.net "https://raw.githubusercontent.com/adammoi/anjim/main/issue.net"
+wget -q -O /etc/issue.net "https://raw.githubusercontent.com/adammoi/anjim/xoc/issue.net"
 chmod +x /etc/issue.net
 echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 
 #install bbr dan optimasi kernel
-wget https://raw.githubusercontent.com/adammoi/anjim/main/ssh/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+wget https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/bbr.sh && chmod +x bbr.sh && ./bbr.sh
 
 # blockir torrent
 iptables -A FORWARD -m string --string "get_peers" --algo bm -j DROP
@@ -263,93 +264,76 @@ iptables-restore -t < /etc/iptables.up.rules
 netfilter-persistent save
 netfilter-persistent reload
 
+
+
 # download script
-cd /usr/bin
+echo " [INFO] Downloading Update File"
 # menu
-wget -O menu "https://raw.githubusercontent.com/adammoi/anjim/main/menu/menu.sh"
-wget -O m-vmess "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-vmess.sh"
-wget -O m-vless "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-vless.sh"
-wget -O running "https://raw.githubusercontent.com/adammoi/anjim/main/menu/running.sh"
-wget -O clearcache "https://raw.githubusercontent.com/adammoi/anjim/main/menu/clearcache.sh"
-wget -O m-trgo "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-trgo.sh"
-wget -O m-trojan "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-trojan.sh"
-wget -O clear-log "https://raw.githubusercontent.com/adammoi/anjim/main/menu/clear-log.sh"
+wget -O /usr/bin/menu "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/menu.sh"
+wget -O /usr/bin/m-vmess "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-vmess.sh"
+wget -O /usr/bin/m-vless "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-vless.sh"
+wget -O /usr/bin/running "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/running.sh"
+wget -O /usr/bin/clearcache "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/clearcache.sh"
+wget -O /usr/bin/m-trojan "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-trojan.sh"
+wget -O /usr/bin/clear-log "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/clear-log.sh"
 
 # menu ssh ovpn
-wget -O m-sshovpn "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-sshovpn.sh"
-wget -O usernew "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/usernew.sh"
-wget -O trial "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/trial.sh"
-wget -O renew "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/renew.sh"
-wget -O hapus "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/hapus.sh"
-wget -O cek "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/cek.sh"
-wget -O member "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/member.sh"
-wget -O delete "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/delete.sh"
-wget -O autokill "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/autokill.sh"
-wget -O ceklim "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/ceklim.sh"
-wget -O tendang "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/tendang.sh"
+wget -O /usr/bin/m-sshovpn "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-sshovpn.sh"
+wget -O /usr/bin/autokill "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/autokill.sh"
+wget -O /usr/bin/ceklim "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/ceklim.sh"
+wget -O /usr/bin/tendang "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/tendang.sh"
 
 # menu system
-wget -O m-system "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-system.sh"
-wget -O m-domain "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-domain.sh"
-wget -O add-host "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/add-host.sh"
-wget -O port-change "https://raw.githubusercontent.com/adammoi/anjim/main/port/port-change.sh"
-wget -O certv2ray "https://raw.githubusercontent.com/adammoi/anjim/main/xray/certv2ray.sh"
-wget -O m-webmin "https://raw.githubusercontent.com/adammoi/anjim/main/menu/m-webmin.sh"
-wget -O speedtest "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/speedtest_cli.py"
-wget -O about "https://raw.githubusercontent.com/adammoi/anjim/main/menu/about.sh"
-wget -O auto-reboot "https://raw.githubusercontent.com/adammoi/anjim/main/menu/auto-reboot.sh"
-wget -O restart "https://raw.githubusercontent.com/adammoi/anjim/main/menu/restart.sh"
-wget -O bw "https://raw.githubusercontent.com/adammoi/anjim/main/menu/bw.sh"
+wget -O /usr/bin/m-system "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-system.sh"
+wget -O /usr/bin/m-domain "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-domain.sh"
+wget -O /usr/bin/add-host "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/add-host.sh"
+wget -O /usr/bin/port-change "https://raw.githubusercontent.com/adammoi/anjim/xoc/port/port-change.sh"
+wget -O /usr/bin/certv2ray "https://raw.githubusercontent.com/adammoi/anjim/xoc/xray/certv2ray.sh"
+wget -O /usr/bin/m-webmin "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-webmin.sh"
+wget -O /usr/bin/speedtest "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/speedtest_cli.py"
+wget -O /usr/bin/about "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/about.sh"
+wget -O /usr/bin/auto-reboot "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/auto-reboot.sh"
+wget -O /usr/bin/restart "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/restart.sh"
+wget -O /usr/bin/bw "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/bw.sh"
 
 # change port
-wget -O port-ssl "https://raw.githubusercontent.com/adammoi/anjim/main/port/port-ssl.sh"
-wget -O port-ovpn "https://raw.githubusercontent.com/adammoi/anjim/main/port/port-ovpn.sh"
+wget -O /usr/bin/port-ssl "https://raw.githubusercontent.com/adammoi/anjim/xoc/port/port-ssl.sh"
+wget -O /usr/bin/port-ovpn "https://raw.githubusercontent.com/adammoi/anjim/xoc/port/port-ovpn.sh"
 
 
-wget -O xp "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/xp.sh"
-wget -O asu "https://raw.githubusercontent.com/adammoi/anjim/main/asu.sh"
+wget -O /usr/bin/xp "https://raw.githubusercontent.com/adammoi/anjim/xoc/ssh/xp.sh"
 
-wget -O sshws "https://raw.githubusercontent.com/adammoi/anjim/main/ssh/sshws.sh"
 
-chmod +x menu
-chmod +x m-vmess
-chmod +x m-vless
-chmod +x running
-chmod +x clearcache
-chmod +x m-trgo
-chmod +x m-trojan
-chmod +x clear-log
+chmod +x /usr/bin/menu
+chmod +x /usr/bin/m-vmess
+chmod +x /usr/bin/m-vless
+chmod +x /usr/bin/running
+chmod +x /usr/bin/clearcache
+chmod +x /usr/bin/m-trojan
+chmod +x /usr/bin/clear-log
 
-chmod +x m-sshovpn
-chmod +x usernew
-chmod +x trial
-chmod +x renew
-chmod +x hapus
-chmod +x cek
-chmod +x member
-chmod +x delete
-chmod +x autokill
-chmod +x ceklim
-chmod +x tendang
+chmod +x /usr/bin/m-sshovpn
+chmod +x /usr/bin/autokill
+chmod +x /usr/bin/ceklim
+chmod +x /usr/bin/tendang
 
-chmod +x m-system
-chmod +x m-domain
-chmod +x add-host
-chmod +x port-change
-chmod +x certv2ray
-chmod +x m-webmin
-chmod +x speedtest
-chmod +x about
-chmod +x auto-reboot
-chmod +x restart
-chmod +x bw
+chmod +x /usr/bin/m-system
+chmod +x /usr/bin/m-domain
+chmod +x /usr/bin/add-host
+chmod +x /usr/bin/port-change
+chmod +x /usr/bin/certv2ray
+chmod +x /usr/bin/m-webmin
+chmod +x /usr/bin/speedtest
+chmod +x /usr/bin/about
+chmod +x /usr/bin/auto-reboot
+chmod +x /usr/bin/restart
+chmod +x /usr/bin/bw
 
-chmod +x port-ssl
-chmod +x port-ovpn
+chmod +x /usr/bin/port-ssl
+chmod +x /usr/bin/port-ovpn
 
-chmod +x xp
-chmod +x asu
-chmod +x sshws
+chmod +x /usr/bin/xp
+
 cd
 
 
