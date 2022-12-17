@@ -1,41 +1,37 @@
 #!/bin/bash
-dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
-biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
-
 function  cektrojan(){ 
 clear 
 echo -n > /tmp/other.txt 
-data=(  ` cat /etc/xray/config.json  |  grep  ' ^#! '  |  cut -d  '  '  -f 2  |  sort  |  uniq ` ) ; 
+data=(`cat /etc/xray/config.json | grep '^#!' | cut -d ' ' -f 2 | sort | uniq`) ; 
 echo -e "┌─────────────────────────────────────────────────┐" 
 echo -e "│              • TROJAN USER ONLINE •             │"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo -e "┌─────────────────────────────────────────────────┐" 
-for  akun  in  " ${data[@]} " 
-do 
-if  [[  -z  " $akun "  ]] ;  then 
-account = " none " 
-fi 
-
+for akun in "${data[@]}" 
+do
+if [[ -z "$akun" ]] ; then 
+account="none"
+fi
 echo -n > /tmp/iptrojan.txt 
-data2=(  ` cat /var/log/xray/access.log  |  tail -n 500  |  cut -d  "  "  -f 3  |  sed  ' s/tcp://g '  |  cut -d  " : "  -f 1  |  sort  |  uniq ` ) ; 
-for  ip  in  " ${data2[@]} " 
-do 
+data2=(`cat /var/log/xray/access.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq`) ; 
+for ip in "${data2[@]}" 
+do
 
-jum= $( cat /var/log/xray/access.log  |  grep -w  " $akun "  |  tail -n 500  |  cut -d  "  "  -f 3  |  sed  ' s/tcp://g '  |  cut -d  " : "  -f 1  |  grep -w  " $ip "  |  sort  |  uniq ) 
-if  [[  " $jum "  =  " $ip "  ]] ;  then 
-echo  " $jum "  >>  /tmp/iptrojan.txt 
-else 
-echo  " $ip "  >>  /tmp/other.txt 
-fi 
-jum2= $( cat /tmp/iptrojan.txt ) 
-sed -i  " / $jum2 /d "  /tmp/other.txt  >  /dev/null  2>&1 
+jum=$(cat /var/log/xray/access.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort | uniq) 
+if [[ "$jum" = "$ip" ]] ; then 
+echo "$jum" >> /tmp/iptrojan.txt 
+else
+echo "$ip" >> /tmp/other.txt 
+fi
+jum2=$(cat /tmp/iptrojan.txt ) 
+sed -i "/$jum2/d" /tmp/other.txt > /dev/null  2>&1 
 done 
 
-day= $( cat /tmp/iptrojan.txt ) 
-if  [[  -z  " $jum "  ]] ;  then 
-echo  >  /dev/null 
+day=$(cat /tmp/iptrojan.txt ) 
+if [[ -z "$jum" ]] ;  then 
+echo > /dev/null 
 else 
-jum2= $( cat /tmp/iptrojan.txt  |  nl ) 
+jum2=$(cat /tmp/iptrojan.txt | nl ) 
 echo -e "│     user :  $akun                               |" ; 
 echo -e "│     $jum2                                       |" ; 
 fi 
@@ -56,7 +52,7 @@ m-trojan
 function deltrojan(){
     clear
 NUMBER_OF_CLIENTS=$(grep -c -E "^#! " "/etc/xray/config.json")
-if  [[  ${NUMBER_OF_CLIENTS}  ==  ' 0 '  ]] ;  then 
+if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • DELETE TROJAN USER •             │"
 echo -e "└─────────────────────────────────────────────────┘"
@@ -80,14 +76,14 @@ echo -e "│                                                 │"
 echo -e "│    • [NOTE] Press any key to back on menu       │"
 echo -e "└─────────────────────────────────────────────────┘"
 echo -e "───────────────────────────────────────────────────"
-read  -rp  "    Input Username :  "  user 
-if  [  -z  $user  ] ;  then 
+read -rp "   Input Username : " user
+if [ -z $user ]; then
 m-trojan
-else 
-exp= $( grep -wE  " ^#!  $user "  " /etc/xray/config.json "  |  cut -d  '  '  -f 3  |  sort  |  uniq ) 
-sed -i  " /^#!  $user  $exp /,/^},{/d "  /etc/xray/config.json 
-systemctl restart xray  >  /dev/null  2>&1 
-clear 
+else
+exp=$(grep -wE "^#! $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+sed -i "/^#! $user $exp/,/^},{/d" /etc/xray/config.json
+systemctl restart xray > /dev/null 2>&1
+clear
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • DELETE TROJAN USER •             │"
 echo -e "└─────────────────────────────────────────────────┘"
@@ -112,8 +108,8 @@ echo -e "┌──────────────────────�
 echo -e "│              • RENEW TROJAN USER •              │"
 echo -e "└─────────────────────────────────────────────────┘" 
 echo -e "┌─────────────────────────────────────────────────┐" 
-NUMBER_OF_CLIENTS= $( grep -c -E  " ^#!  "  " /etc/xray/config.json " ) 
-if  [[  ${NUMBER_OF_CLIENTS}  ==  ' 0 '  ]] ;  then 
+NUMBER_OF_CLIENTS=$(grep -c -E "^#! " "/etc/xray/config.json")
+if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 echo -e "│         • You have no existing clients!         │"
 echo -e "└─────────────────────────────────────────────────┘"  
 echo -e "┌────────────────────── BY ───────────────────────┐" 
@@ -134,24 +130,24 @@ echo -e "┌────────────────────── B
 echo -e "│                  • ADAM SIJA •                  │"
 echo -e "└─────────────────────────────────────────────────┘"  
 echo -e "───────────────────────────────────────────────────"
-read  -rp  "    Input Username :  "  user 
-if  [  -z  $user  ] ;  then 
+read -rp "   Input Username : " user
+if [ -z $user ]; then
 m-trojan
-else 
-read  -p  "    Expired (days):  "  masaaktif 
-if  [  -z  $masaaktif  ] ;  then 
-masaaktif= " 1 " 
-fi 
-exp= $( grep -E  " ^#!  $user "  " /etc/xray/config.json "  |  cut -d  '  '  -f 3  |  sort  |  uniq ) 
-now= $( date +%Y-%m-%d ) 
-d1= $( date -d  " $exp "  +%s ) 
-d2= $( date -d  " $now "  +%s ) 
-exp2= $(( (d 1  - d 2 ) /  86400  )) 
-exp3= $(( $exp2  +  $active )) 
-exp4= ` date -d  " $exp3  days "  + " %Y-%m-%d " ` 
-sed -i  " /#!  $user /c\#!  $user  $exp4 "  /etc/xray/config.json 
-systemctl restart xray  >  /dev/null  2>&1 
-clear 
+else
+read -p "   Expired (days): " masaaktif
+if [ -z $masaaktif ]; then
+masaaktif="1"
+fi
+exp=$(grep -E "^#! $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+now=$(date +%Y-%m-%d)
+d1=$(date -d "$exp" +%s)
+d2=$(date -d "$now" +%s)
+exp2=$(( (d1 - d2) / 86400 ))
+exp3=$(($exp2 + $masaaktif))
+exp4=`date -d "$exp3 days" +"%Y-%m-%d"`
+sed -i "/#! $user/c\#! $user $exp4" /etc/xray/config.json
+systemctl restart xray > /dev/null 2>&1
+clear
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • RENEW TROJAN USER •              │"
 echo -e "└─────────────────────────────────────────────────┘"
@@ -172,14 +168,13 @@ fi
 } 
 
 function  addtrojan(){ 
-source  /var/lib/SIJA/ipvps.conf 
-domain= $( cat /etc/xray/domain ) 
+domain=$(cat /etc/xray/domain) 
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • CREATE TROJAN USER •             │"
 echo -e "└─────────────────────────────────────────────────┘"
 echo -e "┌─────────────────────────────────────────────────┐"
-tr= " $( cat  ~ /log-install.txt  |  grep -w  " Trojan WS  "  |  cut -d: -f2 | sed  ' s/ //g ' ) " 
-until  [[  $user  =~  ^[a-zA-Z0-9_]+$  &&  ${user_EXISTS}  ==  ' 0 '  ]] ;  do 
+tr="$(cat ~/log-install.txt | grep -w "Trojan WS" | cut -d: -f2 | sed ' s/ //g ')" 
+until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${user_EXISTS} == '0' ]] ; do 
 read  -rp  "    Input Username :  "  -e user 
 if  [  -z  $user  ] ;  then 
 echo -e "│        [Error] Username cannot be empty         |"
@@ -191,8 +186,8 @@ echo  " "
 read  -n 1 -s -r -p  "    Press any key to back on menu " 
 m-trojan 
 fi 
-user_EXISTS= $( grep -w  $user  /etc/xray/config.json  |  wc -l ) 
-if  [[  ${user_EXISTS}  ==  ' 1 '  ]] ;  then 
+user_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l ) 
+if [[ ${user_EXISTS} == '1' ]] ; then 
 clear 
 echo -e "┌─────────────────────────────────────────────────┐"
 echo -e "│              • CREATE TROJAN USER •             │"
@@ -207,16 +202,16 @@ read  -n 1 -s -r -p  "    Press any key to back on menu "
 m-trojan 
 fi 
 done 
-uuid= $( cat /proc/sys/kernel/random/uuid ) 
-read  -p  "    Expired (days):  "  masaaktif 
-exp= ` date -d  " $masaaktif  days "  + " %Y-%m-%d " ` 
-sed -i  ' /#trojanws$/a\#!  ' " $user  $exp " ' \ 
-},{"password": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
-sed -i  ' /#trojangrpc$/a\#!  ' " $user  $exp " ' \ 
-},{"password": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
+uuid=$(cat /proc/sys/kernel/random/uuid)
+read -p "   Expired (days): " masaaktif
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#trojanws$/a\#! '"$user $exp"'\
+},{"password": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
+sed -i '/#trojangrpc$/a\#! '"$user $exp"'\
+},{"password": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
 systemctl restart xray 
-trojanlink1= " trojan:// ${uuid} @ ${domain} : ${tr} ?mode=gun&security=tls&type=grpc&serviceName=trojan-grpc&sni=bug.com# ${user} " 
-trojanlink= " trojan:// ${uuid} @ ${domain} : ${tr} ?path=%2Ftrojan-ws&security=tls&host=bug.com&type=ws&sni=bug.com# ${user} " 
+trojanlink1= "trojan://${uuid}@${domain}:${tr}?mode=gun&security=tls&type=grpc&serviceName=trojan-grpc&sni=bug.com#${user}" 
+trojanlink= "trojan://${uuid}@${domain}:${tr}?path=%2Ftrojan-ws&security=tls&host=bug.com&type=ws&sni=bug.com#${user}" 
 clear 
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "│              • CREATE TROJAN USER •             │" | tee -a /etc/log-create-user.log
@@ -227,9 +222,9 @@ echo -e "  Expired On  :  $exp " | tee -a /etc/log-create-user.log
 echo -e "  Host/IP     :  ${domain} " | tee -a /etc/log-create-user.log 
 echo -e "  Port        :  ${tr} " | tee -a /etc/log-create-user.log 
 echo -e "  Key         :  ${uuid} " | tee -a /etc/log-create-user.log 
-echo -e "  Path        : /trojan-ws " | tee -a /etc/log-create-user.log
-echo -e "  Path WSS    : wss://bug.com/trojan-ws " | tee -a /etc/log-create-user.log 
-echo -e "  ServiceName : trojan-grpc " | tee -a /etc/log-create-user.log 
+echo -e "  Path        :  /trojan-ws " | tee -a /etc/log-create-user.log
+echo -e "  Path WSS    :  wss://bug.com/trojan-ws " | tee -a /etc/log-create-user.log 
+echo -e "  ServiceName :  trojan-grpc " | tee -a /etc/log-create-user.log 
 echo -e "└─────────────────────────────────────────────────┘  " | tee -a /etc/log-create-user.log 
 echo -e "┌─────────────────────────────────────────────────┐  " | tee -a /etc/log-create-user.log
 echo -e "  Link WS :  " | tee -a /etc/log-create-user.log
@@ -250,14 +245,14 @@ tr="$(cat ~/log-install.txt | grep -w "Trojan WS" | cut -d: -f2|sed 's/ //g')"
 user=trial`</dev/urandom tr -dc X-Z0-9 | head -c4`
 uuid=$(cat /proc/sys/kernel/random/uuid)
 masaaktif=1
-exp= ` date -d  " $masaaktif  days "  + " %Y-%m-%d " ` 
-sed -i  ' /#trojanws$/a\#!  ' " $user  $exp " ' \ 
-},{"password": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
-sed -i  ' /#trojangrpc$/a\#!  ' " $user  $exp " ' \ 
-},{"password": " ' " " $uuid " " ' ","email": " ' " " $user " " ' " '  /etc/xray/config.json 
+exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+sed -i '/#trojanws$/a\#! '"$user $exp"'\
+},{"password": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
+sed -i '/#trojangrpc$/a\#! '"$user $exp"'\
+},{"password": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
 systemctl restart xray 
-trojanlink1= " trojan:// ${uuid} @ ${domain} : ${tr} ?mode=gun&security=tls&type=grpc&serviceName=trojan-grpc&sni=bug.com# ${user} " 
-trojanlink= " trojan:// ${uuid} @ ${domain} : ${tr} ?path=%2Ftrojan-ws&security=tls&host=bug.com&type=ws&sni=bug.com# ${user} " 
+trojanlink1= "trojan://${uuid}@${domain}:${tr}?mode=gun&security=tls&type=grpc&serviceName=trojan-grpc&sni=bug.com#${user}" 
+trojanlink= "trojan://${uuid}@${domain}:${tr}?path=%2Ftrojan-ws&security=tls&host=bug.com&type=ws&sni=bug.com#${user}" 
 clear 
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "│             • CREATE TRIAL TROJAN  •            │" | tee -a /etc/log-create-user.log
