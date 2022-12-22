@@ -55,7 +55,7 @@ echo ""
 wget -q https://raw.githubusercontent.com/adammoi/anjim/xoc/tools.sh;chmod +x tools.sh;./tools.sh
 rm tools.sh
 clear
-yellow "Add Domain for vmess/vless/trojan dll"
+"Add Domain for vmess/vless/trojan dll"
 echo " "
 read -rp "Input ur domain : " -e pp
     if [ -z $pp ]; then
