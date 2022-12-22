@@ -1,6 +1,4 @@
 #!/bin/bash
-dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
-biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 
 function delvmess(){
 clear
@@ -218,8 +216,6 @@ exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
 sed -i '/#vmess$/a\### '"$user $exp"'\
 },{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
-sed -i '/#vmessgrpc$/a\### '"$user $exp"'\
-},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
 asu=`cat<<EOF
       {
       "v": "2",
@@ -244,25 +240,10 @@ ask=`cat<<EOF
       "id": "${uuid}",
       "aid": "0",
       "net": "ws",
-      "path": "GET-:wss://IPBUG.com/ottin",
+      "path": "GET-:wss://HOSTBUG.com/ottin",
       "type": "none",
       "host": "${domain}",
       "tls": "none"
-}
-EOF`
-grpc=`cat<<EOF
-      {
-      "v": "2",
-      "ps": "${user}",
-      "add": "${domain}",
-      "port": "443",
-      "id": "${uuid}",
-      "aid": "0",
-      "net": "grpc",
-      "path": "vmess-grpc",
-      "type": "none",
-      "host": "",
-      "tls": "tls"
 }
 EOF`
 vmess_base641=$( base64 -w 0 <<< $vmess_json1)
@@ -270,7 +251,6 @@ vmess_base642=$( base64 -w 0 <<< $vmess_json2)
 vmess_base643=$( base64 -w 0 <<< $vmess_json3)
 vmesslink1="vmess://$(echo $asu | base64 -w 0)"
 vmesslink2="vmess://$(echo $ask | base64 -w 0)"
-vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
 systemctl restart xray > /dev/null 2>&1
 service cron restart > /dev/null 2>&1
 clear
@@ -289,8 +269,7 @@ echo -e "  alterId       : 0" | tee -a /etc/log-create-user.log
 echo -e "  Security      : auto" | tee -a /etc/log-create-user.log
 echo -e "  Network       : ws" | tee -a /etc/log-create-user.log
 echo -e "  Path          : /ottin" | tee -a /etc/log-create-user.log
-echo -e "  Path WSS New  : GET-:wss://IPBUG.com/ottin" | tee -a /etc/log-create-user.log
-echo -e "  ServiceName   : vmess-grpc" | tee -a /etc/log-create-user.log
+echo -e "  Path WS New   : GET-:ws://HOSTBUG.com/ottin" | tee -a /etc/log-create-user.log
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "  Link TLS : " | tee -a /etc/log-create-user.log
@@ -299,8 +278,6 @@ echo -e "  " | tee -a /etc/log-create-user.log
 echo -e "  Link none TLS : " | tee -a /etc/log-create-user.log
 echo -e "  ${vmesslink2}" | tee -a /etc/log-create-user.log 
 echo -e "  " | tee -a /etc/log-create-user.log
-echo -e "  Link GRPC : " | tee -a /etc/log-create-user.log
-echo -e "  ${vmesslink3}" | tee -a /etc/log-create-user.log
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log 
 echo -e "┌────────────────────── BY ───────────────────────┐"
 echo -e "│                  • ADAM SIJA •                  │"
@@ -319,8 +296,6 @@ exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
 sed -i '/#vmess$/a\### '"$user $exp"'\
 },{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
-sed -i '/#vmessgrpc$/a\### '"$user $exp"'\
-},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
 asu=`cat<<EOF
       {
       "v": "2",
@@ -345,25 +320,10 @@ ask=`cat<<EOF
       "id": "${uuid}",
       "aid": "0",
       "net": "ws",
-      "path": "GET-:wss://IPBUG.com/ottin",
+      "path": "GET-:wss://HOSTBUG.com/ottin",
       "type": "none",
       "host": "${domain}",
       "tls": "none"
-}
-EOF`
-grpc=`cat<<EOF
-      {
-      "v": "2",
-      "ps": "${user}",
-      "add": "${domain}",
-      "port": "443",
-      "id": "${uuid}",
-      "aid": "0",
-      "net": "grpc",
-      "path": "vmess-grpc",
-      "type": "none",
-      "host": "",
-      "tls": "tls"
 }
 EOF`
 vmess_base641=$( base64 -w 0 <<< $vmess_json1)
@@ -371,7 +331,6 @@ vmess_base642=$( base64 -w 0 <<< $vmess_json2)
 vmess_base643=$( base64 -w 0 <<< $vmess_json3)
 vmesslink1="vmess://$(echo $asu | base64 -w 0)"
 vmesslink2="vmess://$(echo $ask | base64 -w 0)"
-vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
 systemctl restart xray > /dev/null 2>&1
 service cron restart > /dev/null 2>&1
 clear
@@ -390,8 +349,7 @@ echo -e "  alterId       : 0" | tee -a /etc/log-create-user.log
 echo -e "  Security      : auto" | tee -a /etc/log-create-user.log
 echo -e "  Network       : ws" | tee -a /etc/log-create-user.log
 echo -e "  Path          : /ottin" | tee -a /etc/log-create-user.log
-echo -e "  Path WSS New  : GET-:wss://IPBUG.com/ottin" | tee -a /etc/log-create-user.log
-echo -e "  ServiceName   : vmess-grpc" | tee -a /etc/log-create-user.log
+echo -e "  Path WS New   : GET-:ws://HOSTBUG.com/ottin" | tee -a /etc/log-create-user.log
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log
 echo -e "┌─────────────────────────────────────────────────┐" | tee -a /etc/log-create-user.log
 echo -e "  Link TLS : " | tee -a /etc/log-create-user.log
@@ -400,8 +358,6 @@ echo -e "  " | tee -a /etc/log-create-user.log
 echo -e "  Link none TLS : " | tee -a /etc/log-create-user.log
 echo -e "  ${vmesslink2}" | tee -a /etc/log-create-user.log 
 echo -e "  " | tee -a /etc/log-create-user.log
-echo -e "  Link GRPC : " | tee -a /etc/log-create-user.log
-echo -e "  ${vmesslink3}" | tee -a /etc/log-create-user.log
 echo -e "└─────────────────────────────────────────────────┘" | tee -a /etc/log-create-user.log 
 echo -e "┌────────────────────── BY ───────────────────────┐"
 echo -e "│                  • ADAM SIJA •                  │"
