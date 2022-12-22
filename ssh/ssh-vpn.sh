@@ -276,6 +276,7 @@ wget -O /usr/bin/running "https://raw.githubusercontent.com/adammoi/anjim/xoc/me
 wget -O /usr/bin/clearcache "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/clearcache.sh"
 wget -O /usr/bin/m-trojan "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-trojan.sh"
 wget -O /usr/bin/clear-log "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/clear-log.sh"
+wget -O /usr/bin/cekxray "https://raw.githubusercontent.com/adammoi/anjim/xoc/xray/cekxray.sh"
 
 # menu ssh ovpn
 wget -O /usr/bin/m-sshovpn "https://raw.githubusercontent.com/adammoi/anjim/xoc/menu/m-sshovpn.sh"
@@ -311,6 +312,7 @@ chmod +x /usr/bin/running
 chmod +x /usr/bin/clearcache
 chmod +x /usr/bin/m-trojan
 chmod +x /usr/bin/clear-log
+chmod +x /usr/bin/cekxray
 
 chmod +x /usr/bin/m-sshovpn
 chmod +x /usr/bin/autokill
