@@ -1,29 +1,12 @@
 #!/bin/bash
 # My Telegram : https://t.me/Admmoi
 # ==========================================
-# Color
-RED='\033[0;31m'
-NC='\033[0m'
-GREEN='\033[0;32m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-LIGHT='\033[0;37m'
-# ==========================================
-# Getting
-dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
-biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
-#########################
-
-MYIP=$(curl -sS ipv4.icanhazip.com)
-clear
 NUMBER_OF_CLIENTS=$(grep -c -E "^### " "/etc/xray/config.json")
 	if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 		clear
 		echo ""
 		echo "You have no existing clients!"
-		exit 1
+		exit
 	fi
 
 	clear
@@ -54,10 +37,16 @@ systemctl restart xray.service
 service cron restart
 clear
 echo ""
-echo "==============================="
-echo "  Xray/Vmess Account Renewed  "
-echo "==============================="
-echo "Username  : $user"
-echo "Expired   : $exp4"
-echo "==============================="
-echo "Script By ADAM SIJA"
+echo -e "┌─────────────────────────────────────────────────┐"
+echo -e "│              • RENEW VMESS USER •               │"
+echo -e "└─────────────────────────────────────────────────┘"
+echo -e "┌─────────────────────────────────────────────────┐"
+echo -e "│   [INFO]  $user Account Renewed Successfully    |"
+echo -e "│                                                 |"
+echo -e "│   Client Name : $user                           |"
+echo -e "│   Days Added  : $masaaktif Days                 |"
+echo -e "│   Expired On  : $exp4                           |"
+echo -e "└─────────────────────────────────────────────────┘" 
+echo -e "┌────────────────────── BY ───────────────────────┐"
+echo -e "│                  • ADAM SIJA •                  │"
+echo -e "└─────────────────────────────────────────────────┘" 
