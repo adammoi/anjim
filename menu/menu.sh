@@ -1,14 +1,5 @@
 #!/bin/bash
 MYIP=$(curl -sS ipv4.icanhazip.com)
-echo "Checking VPS"
-#########################
-IZIN=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | awk '{print $4}' | grep $MYIP)
-if [ $MYIP = $IZIN ]; then
-echo -e "\e[32mPermission Accepted...\e[0m"
-else
-echo -e "\e[31mPermission Denied!\e[0m";
-exit 0
-fi
 #EXPIRED
 expired=$(curl -sS https://raw.githubusercontent.com/adammoi/anjim/main/anjay/allow | grep $MYIP | awk '{print $3}')
 echo $expired > /root/expired.txt
@@ -62,7 +53,6 @@ ISP=$(curl -s ipinfo.io/org | cut -d " " -f 2-10 )
 CITY=$(curl -s ipinfo.io/city )
 WKT=$(curl -s ipinfo.io/timezone )
 DAY=$(date +%A)
-DATE=$(date +%m/%d/%Y)
 IPVPS=$(curl -s ipinfo.io/ip )
 tram=$( free -m | awk 'NR==2 {print $2}' )
 clear 
@@ -85,14 +75,13 @@ echo -e "\e[33m Isp Name             \e[0m:  $ISP"
 echo -e "\e[33m City                 \e[0m:  $CITY"
 echo -e "\e[33m Domain               \e[0m:  $domain"	
 echo -e "\e[33m Ip Vps               \e[0m:  $IPVPS"
-echo -e "\e[33m Date	             \e[0m:  $DATE"
 echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "                 • SCRIPT MENU •                 "
 echo -e "\e[33m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e " [\e[36m•1\e[0m] SSH & OpenVPN Menu  [\e[36m•5\e[0m] SYSTEM Menu"
 echo -e " [\e[36m•2\e[0m] Vmess Menu          [\e[36m•6\e[0m] Status Service"
 echo -e " [\e[36m•3\e[0m] Vless Menu          [\e[36m•7\e[0m] Clear Log"
-echo -e " [\e[36m•4\e[0m] Trojan Go Menu      [\e[36m•8\e[0m] Trojan GFW Menu"                  
+echo -e " [\e[36m•4\e[0m] Trojan Menu         [\e[36m•8\e[0m] Speedtest"                  
 echo -e   ""
 echo -e   " Press x or [ Ctrl+C ] • To-Exit-Script"
 echo -e   ""
@@ -107,10 +96,10 @@ case $opt in
 1) clear ; m-sshovpn ;;
 2) clear ; m-vmess ;;
 3) clear ; m-vless ;;
-4) clear ; m-trgo ;;
+4) clear ; m-trojan ;;
 5) clear ; m-system ;;
 6) clear ; running ;;
 7) clear ; clear-log ;;
-8) clear ; m-trojan ;;
+8) clear ; speedtest ;;
 x) exit ;;
 esac
